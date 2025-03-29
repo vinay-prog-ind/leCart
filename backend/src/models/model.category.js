@@ -18,34 +18,63 @@ class Category {
                 parent.parent_id IS NULL
                 ORDER BY 
                 parent.name, child.name`;
-            const category = await pool.connect()
-            .then( async (client) => {
+            const category = await pool.connect().then(async (client) => {
                 try {
                     const data = await client.query(query);
+                    console.log(data.rows);
                     return data.rows;
                 } catch (err) {
-                    console.log(err)
+                    console.log(err);
                     return err;
-                }    
-                finally {
+                } finally {
                     client.release();
                 }
             });
             return category;
-            
         } catch (err) {
             client.release();
             throw err;
         }
+    }
+    static async assignCategory(product_id, category_id) {
+        try {
+            const query = `
+            INSERT INTO product_category (product_id, category_id)
+            VALUES ($1, $2) RETURNING * 
+        `;
+            const data = await pool.connect().then((client) => {
+                client
+                    .query(query, [product_id, category_id])
+                    .then((data) => {
+                        client.release();
+                        return data.rows[0];
+                    })
+                    .catch((err) => {
+                        client.release();
+                        throw err;
+                    });
+            });
+            return data;
+        } catch (err) {}
     }
     static async findCategory() {
         try {
-            
         } catch (err) {
             client.release();
             throw err;
         }
     }
+    static async findByCategoryName(categoryName) {
+        try {
+            // const query = `SELECT `
+            const data = await pool.connect().then((client) => {
+                client.query()
+            })
+        } catch (err) {
+            
+        }
+    }
 }
+
 
 module.exports = Category;

@@ -1,7 +1,7 @@
 const pool = require("../config/config.db");
 
 class User {
-    static async insertUser(user_id, username, email, password) {
+    static async insertUser( username, email, password) {
         try {
             const data = pool.connect().then((client) => {
                 return client
@@ -11,7 +11,6 @@ class User {
                     )
                     .then((data) => {
                         client.release();
-                        // console.log(data.rows[0]);
                         return data.rows[0];
                     })
                     .catch((err) => {

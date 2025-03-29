@@ -7,25 +7,21 @@ require("dotenv").config();
 exports.register = async (req, res, next) => {
     try {
         const JWT_SECRET = process.env.JWT_SECRET;
-        const { user_id, username, email, password } = req.body;
+        const { username, email, password } = req.body;
         const hashedPass = await bcrypt.hash(password, 10);
-        const data = await User.insertUser(
-            user_id,
-            username,
-            email,
-            hashedPass
-        );
+        const data = await User.insertUser(username, email, hashedPass);
         let token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
             expiresIn: "1h",
         });
 
-        res.cookie("jwt", token, {
-            httpOnly: true,
-            secure: true,
-            sameSite: "Strict",
-        }).status(200).json({
+        res.status(200).json({
             status: "success",
-            user: data,
+            user: {
+                user_id: data.user_id,
+                username: data.username,
+                email: data.email,
+            },
+            token,
         });
         next();
     } catch (err) {
@@ -36,7 +32,6 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
     try {
-        console.log(req);
         const { email, password } = req.body;
         const data = await User.findUserByEmail(email);
         let token;
@@ -47,17 +42,15 @@ exports.login = async (req, res, next) => {
                 token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
                     expiresIn: "1h",
                 });
-                return res
-                    .cookie("jwt", token, {
-                        httpOnly: true,
-                        secure: true,
-                        sameSite: "Strict",
-                    })
-                    .status(200)
-                    .json({
-                        status: "success",
-                        user: data,
-                    });
+                return res.status(200).json({
+                    status: "success",
+                    user: {
+                        user_id: data.user_id,
+                        username: data.username,
+                        email: data.email,
+                    },
+                    token,
+                });
             } else {
                 return res.status(401).json({
                     status: "failed",

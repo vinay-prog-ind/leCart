@@ -29,24 +29,28 @@ export default function Register() {
                       name="username"
                       onChange={handleOnChange}
                       type={"text"}
+                      ofType={"login"}
                   />
                   <Input
                         label={"Email address"}
                       name="email"
                       onChange={handleOnChange}
                       type={"email"}
+                      ofType={"login"}
                   />
                   <Input
                         label={"Password"}
                       name="password"
                       onChange={handleOnChange}
                       type={"password"}
+                      ofType={"login"}
                   />
                   <Input
                         label={"Confirm password"}
                       name="Confirm password"
                       onChange={handleOnChange}
                       type={"password"}
+                      ofType={"login"}
                   />
                   <Button
                       text={"Register"}
