@@ -3,12 +3,18 @@ import React from "react";
 import { fetchAllPost } from "../utils/api";
 import LoadingComponent from "./ui/LoadingComponent";
 import ProductCard from "./ProductCard";
+import { useCategories } from "../context/categories/useCategories";
 
 export default function ProductsContainer() {
+    
+    const {categories} = useCategories();
+
     const { isPending, isError, error, data } = useQuery({
-        queryKey: ["products"],
-        queryFn: fetchAllPost,
+        queryKey: categories ? ["products", categories] : ["products"],
+        queryFn: () => {categories ? " " : fetchAllPost},
     });
+
+
 
     return (
         <div className="products-containers">

@@ -48,20 +48,32 @@ class Product {
         try {
             const query = `SELECT * FROM products WHERE product_id = $1`;
             const data = await pool.connect().then((client) => {
-                return client.query(query, [id])
+                return client
+                    .query(query, [id])
                     .then((data) => {
                         return data;
                     })
                     .catch((err) => console.log(err))
                     .finally(client.release);
             });
-            return data.rows;
+            return data;
         } catch (err) {
             console.log(err.message);
         }
     }
-    static async findProductByCategory() {
+    static async findProductByCategory(category_name) {
         try {
+            const query = `SELECT name, price, image_uri, category_id product_id FROM products WHERE category_id = $1`;
+            const data = await pool.connect().then((client) => {
+                return client
+                    .query(query, [category_name])
+                    .then((data) => {
+                        return data;
+                    })
+                    .catch((err) => console.log(err))
+                    .finally(client.release());
+            });
+            return data;
         } catch (err) {}
     }
     static async findAllProduct() {

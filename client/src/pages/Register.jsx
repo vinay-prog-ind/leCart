@@ -2,6 +2,7 @@ import React from 'react'
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import { useNavigate } from 'react-router-dom';
+import { userRegister } from '../utils/api';
 
 export default function Register() {
 
@@ -9,9 +10,9 @@ export default function Register() {
         console.log(e.target.value);
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const data = await userRegister();
     }
 
     const navigate = useNavigate();

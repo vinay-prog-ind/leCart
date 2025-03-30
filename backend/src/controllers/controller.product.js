@@ -4,11 +4,8 @@ const Product = require("../models/model.product");
 
 exports.getAllProducts = async (req, res, next) => {
     try {
-            const data = await Product.findAllProduct();
-            console.log(data);
-
-            res.status(200).json(data);
-
+        const data = await Product.findAllProduct();
+        res.status(200).json(data);
         next();
 } catch (err) {
         res.status(401).json(err);
@@ -20,7 +17,7 @@ exports.getProductDetail = async (req, res, next) => {
     try {
         const {id} = req.params;
         const data = await Product.findProduct(id);
-        res.status(200).json(data);
+        res.status(200).json(data.rows);
     } catch (err) {
         res.status(401).json(err);
         next();

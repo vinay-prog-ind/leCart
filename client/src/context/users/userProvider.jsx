@@ -37,6 +37,9 @@ export default function UserProvider({ children }) {
             console.log(error);
         }
     };
+    const register = async () => {
+        
+    }
     const logout = () => {
         sessionStorage.clear();
     };

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchPostDetail } from "../utils/api";
 import LoadingComponent from "../components/ui/LoadingComponent";
 
@@ -12,7 +12,8 @@ export default function Product() {
 
     const { isPending, isError, error, data } = useQuery({
         queryKey: ["product", id],
-        queryFn: () => fetchPostDetail(id),
+        queryFn: fetchPostDetail,
+        // queryFn: () => test(id),
     });
 
     const formatDate = (dateString) => {
@@ -23,9 +24,15 @@ export default function Product() {
             day: "numeric",
         });
     };
+    
+    const navigate = useNavigate();
+    const handleBackNavigate = () => {
+        navigate("/");
+    }
 
     return (
         <div>
+            <div className="back-btn btn" onClick={handleBackNavigate}>&#10094;{" "}Back</div>
             {isPending ? (
                 <div className="products-containers-loading">
                     <LoadingComponent />
@@ -95,7 +102,7 @@ export default function Product() {
                                         type="number"
                                         min="1"
                                         max={data.stock_quantity}
-                                        value={quantity}
+                                        defaultValue={quantity}
                                         // onChange={handleQuantityChange}
                                         className="quantity-input"
                                     />

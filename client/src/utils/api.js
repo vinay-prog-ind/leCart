@@ -44,10 +44,10 @@ export const fetchAllPost = async () => {
     }
 }
 
-export const fetchPostDetail = async (id) => {
+export const fetchPostDetail = async (query) => {
     try {
+        const id = parseInt(query.queryKey[1]);
         const res = await api.get(`product/${id}`);
-        console.log(res.data);
         return res.data[0];
     } catch (err) {
         console.log(err.message);

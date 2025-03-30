@@ -20,21 +20,5 @@ app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
 app.use('/api/product', productRouter)
 
-app.get('/api/test', (req, res, next) => {
-  try {
-    const header = req.headers;
-    const cookie = req.cookies;
-    console.log(cookie);
-    console.log(header);
-    res.status(200).json({
-      cookie,
-      header
-    })
-    next();
-  } catch (err) {
-    console.log(err.message);
-  }
-})
-
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Listening on PORT:${PORT}`));
