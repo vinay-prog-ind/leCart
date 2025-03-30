@@ -37,8 +37,18 @@ export const fetchCategories = async () => {
 
 export const fetchAllPost = async () => {
     try {
-        const res = await api.get("/product/all");
+        const res = await api.get(`/product?category=all`);
         return  res.data;
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+export const fetchProducts = async (category) => {
+    try {
+        const category_name = parseInt(category.queryKey[1]);
+        const res = await api.get(`/product?category=${category_name}`);
+        console.log(res);
+        return res.data.data;
     } catch (err) {
         console.log(err.message);
     }

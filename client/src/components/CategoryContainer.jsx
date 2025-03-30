@@ -32,7 +32,7 @@ export default function CategoryContainer() {
                     <div className="categoriesContainer-ul">
                         <h3 className={`category-parent ${isCurr === i ? "nav_select" : "nav_close"}`}>{el.name}</h3>
                         <div className={`category-parent-span ${isCurr === i ? "open" : "close"}`}>
-                            {el.subCategories?.map((el) => <h3 className="category-sub" key={el.id} onClick={(e) => {e.stopPropagation; changeCategories(el.name)}}>{el.name}</h3>)}
+                            {el.subCategories?.map((el) => <h3 className="category-sub" key={el.id} onClick={(e) => {e.stopPropagation; changeCategories(el.name, el.id)}}>{el.name}</h3>)}
                         </div>
                     </div>
                 </div>

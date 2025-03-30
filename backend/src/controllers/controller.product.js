@@ -26,7 +26,23 @@ exports.getProductDetail = async (req, res, next) => {
 
 exports.getProductByCategory = async (req, res, next) => {
     try {
-        
+        const id = req.query.category;
+        let data;
+        let test;
+        if(id==="0") {
+            test = "success";
+            data = await Product.findAllProduct();
+            
+        }
+        else {
+            test = "fail";
+            data = await Product.findProductByCategory(id);
+        }
+        res.status(200).json(
+            {data,
+            test}
+        )
+        next();
     } catch (err) {
         
     }

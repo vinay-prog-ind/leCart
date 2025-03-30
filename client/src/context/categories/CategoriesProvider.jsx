@@ -4,15 +4,13 @@ import { CategoriesContext } from './categoriesContext'
 export default function CategoriesProvider({children}) {
     
     const [categories, setCategories] = useState(localStorage.getItem('all'));
-
-    const changeCategories = (category) => {
-        console.log(category);
-        console.log(categories);
+    const [categoryId, setCategoryId] = useState(0);
+    const changeCategories = (category, id) => {
         setCategories(category)
-        localStorage.setItem('category', categories);
+        setCategoryId(id);
     }
 
     return (
-        <CategoriesContext.Provider value={{categories, setCategories, changeCategories}}>{children}</CategoriesContext.Provider>
+        <CategoriesContext.Provider value={{categoryId, setCategoryId, categories, setCategories, changeCategories}}>{children}</CategoriesContext.Provider>
     )
 }

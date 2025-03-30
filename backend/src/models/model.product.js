@@ -63,12 +63,12 @@ class Product {
     }
     static async findProductByCategory(category_name) {
         try {
-            const query = `SELECT name, price, image_uri, category_id product_id FROM products WHERE category_id = $1`;
+            const query = `SELECT name, price, image_uri, category_id, product_id FROM products WHERE category_id = $1`;
             const data = await pool.connect().then((client) => {
                 return client
                     .query(query, [category_name])
                     .then((data) => {
-                        return data;
+                        return data.rows;
                     })
                     .catch((err) => console.log(err))
                     .finally(client.release());
