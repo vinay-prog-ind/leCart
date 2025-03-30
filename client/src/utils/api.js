@@ -34,3 +34,22 @@ export const fetchCategories = async () => {
     const data = res.data;
     return data;
 } 
+
+export const fetchAllPost = async () => {
+    try {
+        const res = await api.get("/product/all");
+        return  res.data;
+    } catch (err) {
+        console.log(err.message);
+    }
+}
+
+export const fetchPostDetail = async (id) => {
+    try {
+        const res = await api.get(`product/${id}`);
+        console.log(res.data);
+        return res.data[0];
+    } catch (err) {
+        console.log(err.message);
+    }
+}

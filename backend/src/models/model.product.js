@@ -44,9 +44,21 @@ class Product {
         try {
         } catch (err) {}
     }
-    static async findProduct() {
+    static async findProduct(id) {
         try {
-        } catch (err) {}
+            const query = `SELECT * FROM products WHERE product_id = $1`;
+            const data = await pool.connect().then((client) => {
+                return client.query(query, [id])
+                    .then((data) => {
+                        return data;
+                    })
+                    .catch((err) => console.log(err))
+                    .finally(client.release);
+            });
+            return data.rows;
+        } catch (err) {
+            console.log(err.message);
+        }
     }
     static async findProductByCategory() {
         try {
@@ -54,12 +66,21 @@ class Product {
     }
     static async findAllProduct() {
         try {
-            const data = await pool.connect()
+            const query = `SELECT name, price, image_uri, category_id product_id FROM products`;
+            const data = await pool.connect().then((client) => {
+                return client
+                    .query(query)
+                    .then((data) => {
+                        // client.release();
+                        return data.rows;
+                    })
+                    .catch((err) => console.log(err.message))
+                    .finally(client.release());
+            });
+            return data;
         } catch (err) {}
     }
-    static async fetchProductDetails() {
-        
-    } 
+    static async fetchProductDetails() {}
 }
 
 module.exports = Product;
