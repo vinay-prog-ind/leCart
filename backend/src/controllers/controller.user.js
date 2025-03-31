@@ -68,3 +68,43 @@ exports.login = async (req, res, next) => {
         next(err);
     }
 };
+
+exports.adminLogin = async (req, res, next) => {
+    try {
+        const { email, password } = req.body;
+        const data = await User.findUserByEmail(email);
+        let token;
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if (data) {
+            const validUser = await bcrypt.compare(password, data.password);
+            if (validUser) {
+                token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
+                    expiresIn: "1h",
+                });
+                return res.status(200).json({
+                    status: "success",
+                    user: {
+                        user_id: data.user_id,
+                        username: data.username,
+                        email: data.email,
+                        role: data.role
+                    },
+                    token,
+                });
+            } else {
+                return res.status(401).json({
+                    status: "failed",
+                    message: "Invalid credentials",
+                });
+            }
+        } else {
+            return res.status(401).json({
+                status: "failed",
+                message: "User not found",
+            });
+        }
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};

@@ -37,6 +37,24 @@ class User {
             return data;
         } catch (err) {}
     }
+    static async findAdmin(email) {
+        try {
+            const data = await pool.connect().then((client) => {
+                return client.query("SELECT user_id, username, email, password, role FROM admin WHERE email = $1", [email])
+                .then((data) => {
+                    client.release();
+                    return data.rows[0];
+                })
+                .catch((err) => {
+                    client.release();
+                    throw err;
+                })
+            })
+            return data;
+        } catch (err) {
+            
+        }
+    }
 }
 
 module.exports = User;

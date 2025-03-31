@@ -39,8 +39,7 @@ exports.getProductByCategory = async (req, res, next) => {
             data = await Product.findProductByCategory(id);
         }
         res.status(200).json(
-            {data,
-            test}
+            {data, test}
         )
         next();
     } catch (err) {

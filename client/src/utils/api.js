@@ -12,6 +12,11 @@ export const userLogin = async (userData) => {
 
     const user = await api.post('/user/login', userData);
     return user.data;
+}
+export const userAdminLogin = async (userData) => {
+
+    const user = await api.post('/user/login/admin', userData);
+    return user.data;
 } 
 
 export const userRegister = async (userData) => {

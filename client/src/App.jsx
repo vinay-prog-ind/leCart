@@ -17,6 +17,7 @@ import {
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CategoriesProvider from "./context/categories/CategoriesProvider";
 import Product from "./pages/Product";
+import AdminLogin from "./pages/AdminLogin";
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ isAuthenticated }) => {
@@ -55,6 +56,7 @@ function App() {
                     />
                   </Route>
               </Route>
+              <Route path="/login/admin" element={<AdminLogin />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
             </Routes>

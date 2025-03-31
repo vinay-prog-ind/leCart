@@ -11,6 +11,7 @@ export default function UserProvider({ children }) {
     );
     const [email, setEmail] = useState(sessionStorage.getItem("email") || null);
     const [token, setToken] = useState(sessionStorage.getItem("token") || null);
+    const [role, setRole] = useState(sessionStorage.getItem("role") || null);
     const [isLoading, setIsLoading] = useState(false);
 
     const login = async (userData) => {
@@ -23,6 +24,10 @@ export default function UserProvider({ children }) {
             // localStorage.setItem("email", data.user.email);
             // localStorage.setItem("token", data.token);
 
+            if(userData?.admin) {
+                // admin previlage
+            }
+
             sessionStorage.setItem("user_id", data.user.user_id);
             sessionStorage.setItem("username", data.user.username);
             sessionStorage.setItem("email", data.user.email);
@@ -33,6 +38,36 @@ export default function UserProvider({ children }) {
             setEmail(data.user.email);
             setToken(data.token);
             setIsLoading(false);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const Adminlogin = async (userData) => {
+        setIsLoading(true);
+        try {
+            const data = await userLogin(userData);
+
+            // localStorage.setItem("user_id", data.user.user_id);
+            // localStorage.setItem("username", data.user.username);
+            // localStorage.setItem("email", data.user.email);
+            // localStorage.setItem("token", data.token);
+
+            if(userData?.admin) {
+                // admin previlage
+            }
+
+            sessionStorage.setItem("user_id", data.user.user_id);
+            sessionStorage.setItem("username", data.user.username);
+            sessionStorage.setItem("email", data.user.email);
+            sessionStorage.setItem("token", data.token);
+            sessionStorage.setItem("role", data.role);
+            
+            setUser_id(data.user.user_id);
+            setUsername(data.user.username);
+            setEmail(data.user.email);
+            setToken(data.token);
+            setIsLoading(false);
+            setRole(data.role);
         } catch (error) {
             console.log(error);
         }

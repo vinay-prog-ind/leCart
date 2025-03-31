@@ -14,9 +14,7 @@ export default function ProductsContainer() {
     });
     return (
         <div className="products-containers">
-            {!data ? (
-                <p>Error</p>
-            ) : isPending ? (
+            {isPending ? (
                 <div className="products-containers-loading">
                     <LoadingComponent type={"products"} />
                 </div>

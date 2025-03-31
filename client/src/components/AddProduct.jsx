@@ -235,7 +235,7 @@ export default function AddProduct() {
                             Cancel
                         </button>
                         <button onClick={handleSubmit} type="submit" className="btn btn-primary">
-                            Save Product
+                            Add Product
                         </button>
                     </div>
                 </div>
