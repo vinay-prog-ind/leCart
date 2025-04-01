@@ -6,7 +6,7 @@ import { useUser } from "../context/users/useUser";
 import LoadingComponent from "../components/ui/LoadingComponent";
 
 export default function AdminLogin() {
-    const { login, isLoading } = useUser();
+    const { Adminlogin, isLoading } = useUser();
     const [user, setUser] = useState({
         email: "",
         password: "",
@@ -18,7 +18,7 @@ export default function AdminLogin() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(user);
+        await Adminlogin(user);
         navigate("/");
     };
     const navigate = useNavigate();

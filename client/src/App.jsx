@@ -27,44 +27,52 @@ const ProtectedRoute = ({ isAuthenticated }) => {
         <Navigate to="/login" replace />
     );
 };
-const AdminProtected = ({ admin }) => {
-    return admin;
+const AdminProtected = ({ role }) => {
+    return role === "admin" ? <Outlet /> : <Navigate to="/" replace />;
 };
 function App() {
-  const { username } = useUser();
+    const { username, role } = useUser();
 
-  return (
-    <>
-      <QueryClientProvider client={queryClient}>
-        <ReactQueryDevtools />
-        <CategoriesProvider>
-          <Router>
-            <Routes>
-              <Route
-                  element={
-                    <ProtectedRoute
-                      isAuthenticated={username}
-                    />
-                  }>
-                  <Route element={<Applayout />}>
-                    <Route path="/test" element={<Test />} />
-                    <Route path="/" element={<Landing />} />
-                    <Route path="/product/:id" element={<Product />} />
-                    <Route
-                      path="/admin/new"
-                      element={<AddProduct />}
-                    />
-                  </Route>
-              </Route>
-              <Route path="/login/admin" element={<AdminLogin />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
-            </Routes>
-          </Router>
-        </CategoriesProvider>
-      </QueryClientProvider>
-    </>
-  );
+    return (
+        <>
+            <QueryClientProvider client={queryClient}>
+                <ReactQueryDevtools />
+                <CategoriesProvider>
+                    <Router>
+                        <Routes>
+                            <Route
+                                element={
+                                    <ProtectedRoute
+                                        isAuthenticated={username}
+                                    />
+                                }>
+                                <Route element={<Applayout />}>
+                                    <Route path="/test" element={<Test />} />
+                                    <Route path="/" element={<Landing />} />
+                                    <Route
+                                        path="/product/:id"
+                                        element={<Product />}
+                                    />
+                                  <Route element={<AdminProtected role={role} />}>
+                                      <Route
+                                          path="/admin/new"
+                                          element={<AddProduct />}
+                                      />
+                                  </Route>
+                                </Route>
+                            </Route>
+                            <Route
+                                path="/login/admin"
+                                element={<AdminLogin />}
+                            />
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/register" element={<Register />} />
+                        </Routes>
+                    </Router>
+                </CategoriesProvider>
+            </QueryClientProvider>
+        </>
+    );
 }
 
 export default App;

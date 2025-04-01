@@ -31,9 +31,9 @@ export default function CategoryContainer() {
                 <div className="categoryContainer-div" key={el.id} onClick={() => toggleOpen(i, el.name)}>
                     <div className="categoriesContainer-ul">
                         <h3 className={`category-parent ${isCurr === i ? "nav_select" : "nav_close"}`}>{el.name}</h3>
-                        <div className={`category-parent-span ${isCurr === i ? "open" : "close"}`}>
-                            {el.subCategories?.map((el) => <h3 className="category-sub" key={el.id} onClick={(e) => {e.stopPropagation; changeCategories(el.name, el.id)}}>{el.name}</h3>)}
-                        </div>
+                    </div>
+                    <div className={`category-parent-span ${isCurr === i ? "open" : "close"}`}>
+                        {el.subCategories?.map((el) => <h3 className="category-sub" key={el.id} onClick={(e) => {e.stopPropagation; changeCategories(el.name, el.id)}}>{el.name}</h3>)}
                     </div>
                 </div>
             ))}

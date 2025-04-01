@@ -21,6 +21,26 @@ class User {
             return data;
         } catch (err) {}
     }
+        static async insertAdmin( username, email, password, role) {
+        try {
+            const data = pool.connect().then((client) => {
+                return client
+                    .query(
+                        "INSERT INTO admin (username, email, password, role) VALUES ($1, $2, $3, $4) RETURNING user_id, username, email, role",
+                        [ username, email, password, role]
+                    )
+                    .then((data) => {
+                        client.release();
+                        return data.rows[0];
+                    })
+                    .catch((err) => {
+                        client.release();
+                        throw err;
+                    });
+            });
+            return data;
+        } catch (err) {}
+    }
     static async findUserByEmail(email) {
         try {
             const data = await pool.connect().then((client) => {

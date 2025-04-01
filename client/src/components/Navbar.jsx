@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 export default function Navbar() {
 
     const navigate = useNavigate()
-    const {logout} = useUser();
+    const {username, logout} = useUser();
 
     const handleLogout = () => {
         try {
@@ -20,10 +20,10 @@ export default function Navbar() {
 
     return (
         <nav className="main-nav">
-            <h2>Logo</h2>
-            <input type="text" placeholder="search item" />
+            <h2>leCart</h2>
+            <input className="navbar-searchbar" type="text" placeholder="search item" />
             <div>
-                <span>Profile</span>
+                <p className="avatar">{username.slice(0, 1).toUpperCase()}</p>
             </div>
             <Button text={"logout"} onClick={handleLogout} type={"tertiary"} />
         </nav>

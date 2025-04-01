@@ -5,17 +5,17 @@ import { useCategories } from '../context/categories/useCategories';
 
 export default function Landing() {
 
-  const {categories} = useCategories();
-
   useEffect(() => {
     
   }) 
 
   return (
-    <>
-      <CategoryContainer/>
-      <h3>Category: {categories}</h3>
-      <ProductsContainer/>      
-    </>
+    <div className='landing'>
+      <div className='landing-section'>
+        <CategoryContainer/>
+        <ProductsContainer/>      
+      </div>
+    </div>
   )
 }
+ 

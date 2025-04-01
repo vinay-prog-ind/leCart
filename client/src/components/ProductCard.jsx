@@ -1,7 +1,7 @@
 import React from 'react'
 import Button from './ui/Button'
 import { useNavigate } from 'react-router-dom'
-export default function ProductCard({image, title, price, id}) {
+export default function ProductCard({image, title, isActive, price, id}) {
   
     const navigate = useNavigate();
 
@@ -12,10 +12,13 @@ export default function ProductCard({image, title, price, id}) {
 
     return (
     <div className='product-card' onClick={handleNavigate}>
-        <img src={image} alt="" />
+        <div className='product-card-top'>
+          <img src={image} alt="" />
+          <p>₹{price}</p>
+        </div>
         <div className='product-card-bottom'>
-            <h2>{title}</h2>
-            <h3>₹{price}</h3>
+          <h2>{title}</h2>
+          <h3 className={`${isActive ? "product-InStock" : "product-OutOfStock"}`}>{isActive ? "In Stock" : "Out of  Stock"}</h3>
         </div>
     </div>
   )

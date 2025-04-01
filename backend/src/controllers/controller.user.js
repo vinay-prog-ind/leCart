@@ -30,6 +30,34 @@ exports.register = async (req, res, next) => {
     }
 };
 
+exports.registerAdmin = async (req, res, next) => {
+    try {
+        const JWT_SECRET = process.env.JWT_SECRET;
+        const { username, email, password, role} = req.body;
+        
+        const hashedPass = await bcrypt.hash(password, 10);
+        const data = await User.insertAdmin(username, email, hashedPass, role);
+        let token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
+            expiresIn: "1h",
+        });
+
+        res.status(200).json({
+            status: "success",
+            user: {
+                user_id: data.user_id,
+                username: data.username,
+                email: data.email,
+                role: data.role
+            },
+            token,
+        });
+        next();
+    } catch (err) {
+        console.log(err.message);
+        next(err);
+    }
+};
+
 exports.login = async (req, res, next) => {
     try {
         const { email, password } = req.body;
@@ -72,7 +100,9 @@ exports.login = async (req, res, next) => {
 exports.adminLogin = async (req, res, next) => {
     try {
         const { email, password } = req.body;
-        const data = await User.findUserByEmail(email);
+        const reqBody = req.body;
+        console.log(reqBody);
+        const data = await User.findAdmin(email);
         let token;
         const JWT_SECRET = process.env.JWT_SECRET;
         if (data) {

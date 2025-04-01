@@ -63,7 +63,7 @@ class Product {
     }
     static async findProductByCategory(category_name) {
         try {
-            const query = `SELECT name, price, image_uri, category_id, product_id FROM products WHERE category_id = $1`;
+            const query = `SELECT * FROM products WHERE category_id = $1`;
             const data = await pool.connect().then((client) => {
                 return client
                     .query(query, [category_name])
@@ -78,7 +78,7 @@ class Product {
     }
     static async findAllProduct() {
         try {
-            const query = `SELECT name, price, image_uri, category_id product_id FROM products`;
+            const query = `SELECT * FROM products`;
             const data = await pool.connect().then((client) => {
                 return client
                     .query(query)
