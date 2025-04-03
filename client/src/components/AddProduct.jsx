@@ -27,11 +27,10 @@ export default function AddProduct() {
     const handleOnChange = (e) => {
         const { name, value, type, checked } = e.target;
 
-        if(type==="text") sanitizeInput(value);
-        
+        if (type === "text") sanitizeInput(value);
+
         const newValue = type === "checkbox" ? checked : value;
 
-        
         let processedValue = newValue;
         if ((name === "price" || name === "stock_quantity") && value !== "") {
             processedValue = Number(value);
@@ -41,8 +40,6 @@ export default function AddProduct() {
             ...productData,
             [name]: processedValue,
         });
-
-
     };
 
     const handleSubmit = async () => {
@@ -64,33 +61,6 @@ export default function AddProduct() {
 
     return (
         <>
-            {/* <div className="product-input-div-sep-outer start">
-                <div className="product-input-div">
-                    <label htmlFor="category">category: </label>
-                    {categories.length ? (
-                        // <select name="category_id" value={productData.category_id} onChange={(e)=>console.log(e.target.value)}>
-                        <select
-                            name="category_id"
-                            defaultValue={"select"}
-                            onChange={handleOnChange}>
-                            <option value="select" disabled>
-                                Select Category
-                            </option>
-                            {categories.map((el) => (
-                                <optgroup key={el.id} label={el.name}>
-                                    {el.subCategories?.map((el) => (
-                                        <option key={el.id} value={el.id}>
-                                            {el.name}
-                                        </option>
-                                    ))}
-                                </optgroup>
-                            ))}
-                        </select>
-                    ) : (
-                        ""
-                    )}
-                </div>
-            </div> */}
             <div className="form-container">
                 <div onSubmit={handleSubmit}>
                     <h2 className="form-title">Add New Product</h2>
@@ -234,7 +204,10 @@ export default function AddProduct() {
                         <button type="reset" className="btn btn-secondary">
                             Cancel
                         </button>
-                        <button onClick={handleSubmit} type="submit" className="btn btn-primary">
+                        <button
+                            onClick={handleSubmit}
+                            type="submit"
+                            className="btn btn-primary">
                             Add Product
                         </button>
                     </div>

@@ -103,6 +103,7 @@ exports.adminLogin = async (req, res, next) => {
         const reqBody = req.body;
         console.log(reqBody);
         const data = await User.findAdmin(email);
+        console.log(data);
         let token;
         const JWT_SECRET = process.env.JWT_SECRET;
         if (data) {

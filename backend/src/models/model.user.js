@@ -55,7 +55,9 @@ class User {
                 })
             })
             return data;
-        } catch (err) {}
+        } catch (err) {
+            return err;
+        }
     }
     static async findAdmin(email) {
         try {

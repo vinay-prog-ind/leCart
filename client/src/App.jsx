@@ -18,6 +18,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import CategoriesProvider from "./context/categories/CategoriesProvider";
 import Product from "./pages/Product";
 import AdminLogin from "./pages/AdminLogin";
+import Error from "./pages/Error";
 const queryClient = new QueryClient();
 
 const ProtectedRoute = ({ isAuthenticated }) => {
@@ -53,6 +54,7 @@ function App() {
                                         path="/product/:id"
                                         element={<Product />}
                                     />
+                                  <Route path="/error" element={<Error />} />
                                   <Route element={<AdminProtected role={role} />}>
                                       <Route
                                           path="/admin/new"

@@ -4,15 +4,24 @@ const uri = import.meta.env.VITE_APP_URI;
 
 
 
-const api = axios.create({
+export const api = axios.create({
     baseURL: uri,
 })
 
-export const userLogin = async (userData) => {
+api.interceptors.request.use((config) => {
+  const token = sessionStorage.getItem("token"); // Or use Context API to get the token
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+}, (error) => Promise.reject(error));
 
-    const user = await api.post('/user/login', userData);
-    return user.data;
-}
+// export const userLogin = async (userData) => {
+
+//     const user = await api.post('/user/login', userData);
+//     console.log(user);
+//     return user;
+// }
 export const AdminLogin = async (userData) => {
 
     const user = await api.post('/user/login/admin', userData);

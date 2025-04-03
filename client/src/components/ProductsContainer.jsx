@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { useState } from "react";
 import { fetchProducts } from "../utils/api";
 import LoadingComponent from "./ui/LoadingComponent";
 import ProductCard from "./ProductCard";

@@ -28,10 +28,25 @@ body {
   --grayish-blue: hsl(233, 8%, 95%);
 }
 
+.error-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 5px;
+}
+#error-page-return {
+  font-weight: 400;
+  cursor: pointer;
+}
+
 .products-loading {
-  width: 150px;
+  width: 100px;
   aspect-ratio: 1/1;
 }
+
+products-containers-loading
 
 .btn {
   cursor: pointer;
@@ -398,7 +413,7 @@ body {
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 100%);
 }
 .products-container-inner {
   display: grid;

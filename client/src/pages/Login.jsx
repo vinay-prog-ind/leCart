@@ -4,22 +4,52 @@ import Button from "../components/ui/Button";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../context/users/useUser";
 import LoadingComponent from "../components/ui/LoadingComponent";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
-    const { login, isLoading } = useUser();
+    const { login, logout, isLoading, setIsLoading } = useUser();
     const [user, setUser] = useState({
         email: "",
         password: "",
     });
-    
+
     const handleOnChange = (e) => {
         setUser({ ...user, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        await login(user);
-        navigate("/");
+        try {
+            setIsLoading(true);
+            await login(user);
+            navigate("/");
+            setIsLoading(false);
+            toast.error("Logged in succesfully!", {
+                autoClose: 5000,
+                // customProgressBar: true
+            });
+        } catch (err) {
+            setIsLoading(false);
+            // alert(
+            //     err.response?.data?.message ||
+            //         "Invalid credentials. Please try again."
+            // );
+            toast(
+                err.response?.data?.message ||
+                    "Invalid credentials. Please try again.",
+                {
+                    autoClose: 5000,
+                    theme: "dark",
+                    position: "top-center",
+                    // customProgressBar: true
+                }
+            );
+            // navigate("/login");
+            setUser({
+                email: "",
+                password: "",
+            });
+        }
     };
     const navigate = useNavigate();
     const handleNavigate = () => {
@@ -27,6 +57,11 @@ export default function Login() {
     };
     return (
         <div className="login-div">
+            <ToastContainer
+                autoClose={5000}
+                theme="dark"
+                position="top-right"
+            />
             <div className="login-div-inner">
                 {!isLoading ? (
                     <>

@@ -2,6 +2,8 @@ import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { fetchCategories } from "../utils/api";
 import { useCategories } from "../context/categories/useCategories";
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export default function CategoryContainer() {
     const [isOpen, setIsOpen] = useState(false);
@@ -13,30 +15,65 @@ export default function CategoryContainer() {
 
     const [currentCategory, setCurrentCategory] = useState("All");
 
-    const {changeCategories} = useCategories();
+    const { changeCategories } = useCategories();
 
     const toggleOpen = (i, category) => {
-        if(isCurr === i ) {
+        if (isCurr === i) {
             setIsCurr();
-            setIsOpen(false)
+            setIsOpen(false);
+        } else {
+            setIsCurr(i);
+            setIsOpen((isOpen) => !isOpen);
         }
-        else {
-            setIsCurr(i)
-            setIsOpen(isOpen => !isOpen)
-        }
+    };
+    const toastFn = toast.error("something went wrong.", {
+        position: "top-center"
+    })
+
+    const navigate = useNavigate();
+
+    if(isError) {
+        navigate("/error");
     }
+
     return (
         <div className="category-container">
-            {isPending ? <h1>Loading</h1> : data.map((el, i) => (
-                <div className="categoryContainer-div" key={el.id} onClick={() => toggleOpen(i, el.name)}>
-                    <div className="categoriesContainer-ul">
-                        <h3 className={`category-parent ${isCurr === i ? "nav_select" : "nav_close"}`}>{el.name}</h3>
+            <ToastContainer />
+            {isPending ? (
+                <h1>Loading</h1>
+            ) : (
+                data.map((el, i) => (
+                    <div
+                        className="categoryContainer-div"
+                        key={el.id}
+                        onClick={() => toggleOpen(i, el.name)}>
+                        <div className="categoriesContainer-ul">
+                            <h3
+                                className={`category-parent ${
+                                    isCurr === i ? "nav_select" : "nav_close"
+                                }`}>
+                                {el.name}
+                            </h3>
+                        </div>
+                        <div
+                            className={`category-parent-span ${
+                                isCurr === i ? "open" : "close"
+                            }`}>
+                            {el.subCategories?.map((el) => (
+                                <h3
+                                    className="category-sub"
+                                    key={el.id}
+                                    onClick={(e) => {
+                                        e.stopPropagation;
+                                        changeCategories(el.name, el.id);
+                                    }}>
+                                    {el.name}
+                                </h3>
+                            ))}
+                        </div>
                     </div>
-                    <div className={`category-parent-span ${isCurr === i ? "open" : "close"}`}>
-                        {el.subCategories?.map((el) => <h3 className="category-sub" key={el.id} onClick={(e) => {e.stopPropagation; changeCategories(el.name, el.id)}}>{el.name}</h3>)}
-                    </div>
-                </div>
-            ))}
+                ))
+            )}
         </div>
     );
 }
