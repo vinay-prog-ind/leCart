@@ -25,6 +25,13 @@ export default function Product() {
         });
     };
     
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    if (value > 0 && value <= product.stock_quantity) {
+      setQuantity(value);
+    }
+  };
+
     const navigate = useNavigate();
     const handleBackNavigate = () => {
         navigate("/");
@@ -102,8 +109,8 @@ export default function Product() {
                                         type="number"
                                         min="1"
                                         max={data.stock_quantity}
-                                        defaultValue={quantity}
-                                        // onChange={handleQuantityChange}
+                                        value={quantity}
+                                        onChange={handleQuantityChange}
                                         className="quantity-input"
                                     />
                                     <button
