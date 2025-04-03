@@ -4,6 +4,7 @@ import { fetchProducts } from "../utils/api";
 import LoadingComponent from "./ui/LoadingComponent";
 import ProductCard from "./ProductCard";
 import { useCategories } from "../context/categories/useCategories";
+import { useNavigate } from "react-router-dom";
 
 export default function ProductsContainer() {
     const { categoryId, categories,  setCategories, setCategoryId} = useCategories();
@@ -16,6 +17,12 @@ export default function ProductsContainer() {
     const handleCloseCategories = (category) => {
         setCategories(category);
         setCategoryId(0);
+    }
+
+    const navigate = useNavigate();
+
+    if(isError) {
+        navigate("/error");
     }
 
     return (

@@ -24,16 +24,8 @@ export default function Login() {
             await login(user);
             navigate("/");
             setIsLoading(false);
-            toast.error("Logged in succesfully!", {
-                autoClose: 5000,
-                // customProgressBar: true
-            });
         } catch (err) {
             setIsLoading(false);
-            // alert(
-            //     err.response?.data?.message ||
-            //         "Invalid credentials. Please try again."
-            // );
             toast(
                 err.response?.data?.message ||
                     "Invalid credentials. Please try again.",
@@ -41,10 +33,8 @@ export default function Login() {
                     autoClose: 5000,
                     theme: "dark",
                     position: "top-center",
-                    // customProgressBar: true
                 }
             );
-            // navigate("/login");
             setUser({
                 email: "",
                 password: "",
@@ -58,9 +48,6 @@ export default function Login() {
     return (
         <div className="login-div">
             <ToastContainer
-                autoClose={5000}
-                theme="dark"
-                position="top-right"
             />
             <div className="login-div-inner">
                 {!isLoading ? (

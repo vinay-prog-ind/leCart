@@ -26,9 +26,7 @@ export default function CategoryContainer() {
             setIsOpen((isOpen) => !isOpen);
         }
     };
-    const toastFn = toast.error("something went wrong.", {
-        position: "top-center"
-    })
+
 
     const navigate = useNavigate();
 
@@ -38,7 +36,7 @@ export default function CategoryContainer() {
 
     return (
         <div className="category-container">
-            <ToastContainer />
+
             {isPending ? (
                 <h1>Loading</h1>
             ) : (
