@@ -18,7 +18,7 @@ app.use(cookieParser());
 
 app.use('/api/user', userRouter);
 app.use('/api/category', categoryRouter);
-app.use('/api/product', productRouter)
+app.use('/api/product', productRouter);
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => console.log(`Listening on PORT:${PORT}`));
