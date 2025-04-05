@@ -26,6 +26,7 @@ export default function Product() {
         address: "",
         pincode: "",
         email: "",
+        mobile_no: "",
         quantity: quantity,
         total_cost: quantity * data?.price,
         user_id: parseInt(sessionStorage.getItem("user_id")),
@@ -246,6 +247,24 @@ export default function Product() {
                                             required
                                         />
                                     </div>
+
+                                    <div className="form-group">
+                                            <label
+                                                className="form-label"
+                                                htmlFor="product_name">
+                                                Mobile number
+                                            </label>
+                                            <input
+                                                className="form-input"
+                                                type="number"
+                                                // id="product_name"
+                                                name="mobile_no"
+                                                // defaultValue={quantity}
+                                                // value={productData.product_name}
+                                                onChange={handleOnChange}
+                                                required
+                                            />
+                                        </div>
 
                                     <div className="seperate-10px">
                                         <div className="form-group">
