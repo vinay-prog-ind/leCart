@@ -69,6 +69,7 @@ exports.createProduct = async (req, res, next) => {
 exports.buyProduct = async (req, res, next) => {
     try {
         const data = req.body;
+        console.log(data);
         res.status(200).json(data);
     } catch (err) {
         console.log(err);

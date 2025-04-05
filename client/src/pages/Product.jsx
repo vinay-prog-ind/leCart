@@ -28,6 +28,7 @@ export default function Product() {
         email: "",
         quantity: quantity,
         total_cost: quantity * data?.price,
+        user_id: sessionStorage.getItem("user_id"),
     });
 
     const handleQuantityChange = (e) => {
@@ -50,12 +51,23 @@ export default function Product() {
     };
 
     const handleSubmit = async () => {
-        await buyProduct(details);
+        const totalCost = quantity * data.price;
+
+        setDetails((prevDetails) => ({
+            ...prevDetails,
+            quantity,
+            total_cost: totalCost,
+        }));
+
+        const payload = {
+            ...details,
+            quantity,
+            total_cost: totalCost,
+        };
+        await buyProduct(payload);
     };
 
-    // useEffect(() => {
-    //     setCost(quantity * data?.price);
-    // }, [quantity]);
+
 
     return (
         <div className="product-page-section">
@@ -266,7 +278,9 @@ export default function Product() {
                                                 type="number"
                                                 // id="product_name"
                                                 name="total_cost"
-                                                defaultValue={quantity * data?.price}
+                                                defaultValue={
+                                                    quantity * data?.price
+                                                }
                                                 // value={productData.product_name}
                                                 onChange={handleOnChange}
                                                 required

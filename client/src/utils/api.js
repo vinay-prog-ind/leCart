@@ -68,5 +68,5 @@ export const fetchPostDetail = async (query) => {
 
 export const buyProduct = async (details) => {
     const res = await api.post("/product/buy", details);
-    console.log(res);
+    console.log(res.data);
 } 
