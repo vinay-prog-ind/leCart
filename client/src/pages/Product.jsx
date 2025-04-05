@@ -1,26 +1,36 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { fetchPostDetail } from "../utils/api";
+import { buyProduct, fetchPostDetail } from "../utils/api";
 import LoadingComponent from "../components/ui/LoadingComponent";
 import Button from "../components/ui/Button";
 import { formatDate } from "../utils/formateDate";
 
 export default function Product() {
+
+    
     const { id } = useParams();
     const [product, setProduct] = useState();
     const [openForm, setOpenForm] = useState(false);
-
+    
     const [quantity, setQuantity] = useState(1);
     const [cost, setCost] = useState(0);
-
+    
     const navigate = useNavigate();
-
+    
     const { isPending, isError, error, data } = useQuery({
         queryKey: ["product", id],
         queryFn: fetchPostDetail,
         // queryFn: () => test(id),
     });
+    const [details, setDetails] = useState({
+        product_id: id,
+        address: "",
+        pincode: "",
+        email: "",
+        quantity: quantity,
+        total_cost: quantity*data?.price
+    })
 
     const handleQuantityChange = (e) => {
         const value = parseInt(e.target.value);
@@ -37,7 +47,13 @@ export default function Product() {
         setOpenForm(value);
     };
 
-    const handleSubmit = () => {};
+    const handleOnChange = (e) => {
+        setDetails({...details, [e.target.name]: e.target.value});
+    }
+
+    const handleSubmit = async () => {
+        await buyProduct(details);
+    };
 
     useEffect(() => {
         setCost(quantity * data?.price);
@@ -154,7 +170,7 @@ export default function Product() {
                         openForm ? "open-form address-form" : "close"
                     }`}>
                     <div className="address-form-inner">
-                        <div className="form-container" onClick={handleSubmit}>
+                        <div className="form-container" onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <label
                                     className="form-label"
@@ -167,7 +183,7 @@ export default function Product() {
                                     id="product_name"
                                     name="product_name"
                                     // value={productData.product_name}
-                                    // onChange={handleOnChange}
+                                    onChange={handleOnChange}
                                     required
                                 />
                             </div>
@@ -180,10 +196,10 @@ export default function Product() {
                                 <input
                                     className="form-input"
                                     type="text"
-                                    id="product_name"
-                                    name="product_name"
+                                    // id="product_name"
+                                    name="address"
                                     // value={productData.product_name}
-                                    // onChange={handleOnChange}
+                                    onChange={handleOnChange}
                                     required
                                 />
                             </div>
@@ -196,10 +212,10 @@ export default function Product() {
                                 <input
                                     className="form-input"
                                     type="number"
-                                    id="product_name"
-                                    name="product_name"
+                                    // id="product_name"
+                                    name="pincode"
                                     // value={productData.product_name}
-                                    // onChange={handleOnChange}
+                                    onChange={handleOnChange}
                                     required
                                 />
                             </div>
@@ -212,10 +228,10 @@ export default function Product() {
                                 <input
                                     className="form-input"
                                     type="text"
-                                    id="product_name"
-                                    name="product_name"
+                                    // id="product_name"
+                                    name="email"
                                     // value={productData.product_name}
-                                    // onChange={handleOnChange}
+                                    onChange={handleOnChange}
                                     required
                                 />
                             </div>
@@ -230,11 +246,11 @@ export default function Product() {
                                     <input
                                         className="form-input"
                                         type="number"
-                                        id="product_name"
-                                        name="product_name"
+                                        // id="product_name"
+                                        name="quantity"
                                         defaultValue={quantity}
                                         // value={productData.product_name}
-                                        // onChange={handleOnChange}
+                                        onChange={handleOnChange}
                                         required
                                         disabled
                                     />
@@ -249,11 +265,11 @@ export default function Product() {
                                     <input
                                         className="form-input"
                                         type="number"
-                                        id="product_name"
-                                        name="product_name"
+                                        // id="product_name"
+                                        name="total_cost"
                                         defaultValue={cost}
                                         // value={productData.product_name}
-                                        // onChange={handleOnChange}
+                                        onChange={handleOnChange}
                                         required
                                         disabled
                                     />
@@ -267,7 +283,7 @@ export default function Product() {
                                 <Button
                                     type="buy"
                                     text={"CONFIRM ORDER"}
-                                    // onClick={() => handleBuyToggle(true)}
+                                    onClick={handleSubmit}
                                 />
                                 <Button
                                     // type="buy"

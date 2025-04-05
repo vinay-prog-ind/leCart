@@ -91,7 +91,7 @@ export default function Login() {
                                 <span
                                     onClick={() => handleNavigate("/register")}
                                     id="text-highlight">
-                                    Register.
+                                    {" "}Register.
                                 </span>
                             </p>
                         </>

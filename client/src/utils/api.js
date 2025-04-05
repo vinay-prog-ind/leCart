@@ -62,6 +62,11 @@ export const fetchProducts = async (category) => {
 
 export const fetchPostDetail = async (query) => {
         const id = parseInt(query.queryKey[1]);
-        const res = await api.get(`product/${id}`);
+        const res = await api.get(`/product/${id}`);
         return res.data[0];
 }
+
+export const buyProduct = async (details) => {
+    const res = await api.post("/product/buy", details);
+    console.log(res);
+} 
