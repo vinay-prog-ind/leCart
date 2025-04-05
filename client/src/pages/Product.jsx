@@ -28,7 +28,7 @@ export default function Product() {
         email: "",
         quantity: quantity,
         total_cost: quantity * data?.price,
-        user_id: sessionStorage.getItem("user_id"),
+        user_id: parseInt(sessionStorage.getItem("user_id")),
     });
 
     const handleQuantityChange = (e) => {
