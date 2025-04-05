@@ -240,6 +240,10 @@ products-containers-loading
     display: flex;
     gap: 16px;
   }
+  .form-group input:disabled {
+   color: gray; 
+   cursor:not-allowed
+  }
   
   .form-row .form-group {
     flex: 1;
@@ -258,7 +262,7 @@ products-containers-loading
   .form-select {
     display: block;
     width: 100%;
-    padding: 10px 12px;
+    padding: 10px 5px;
     font-size: 15px;
     line-height: 1.5;
     color: #333;
@@ -275,6 +279,7 @@ products-containers-loading
     outline: none;
     box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.1);
   }
+  
   
   .checkbox-group {
     display: flex;
@@ -670,7 +675,7 @@ products-containers-loading
   margin: 0;
 }
 
-.buy-button {
+.buy-btn {
   flex: 1;
   padding: 0 1.5rem;
   height: 2.5rem;
@@ -684,11 +689,43 @@ products-containers-loading
   transition: opacity 0.2s ease;
 }
 
-.buy-button:hover {
+.buy-btn:hover {
   opacity: 0.9;
 }
 
-.buy-button:disabled {
+.buy-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+.product-page-section {
+  position: relative;
+}
+.open-form {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.address-form-btn {
+  background-color: transparent;
+  border: none;
+  font-size: 40px;
+  cursor: pointer;
+}
+.address-form {
+  backdrop-filter: blur(5px);
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.address-form-inner {
+  width: 500px;
+  /* background-color: #007aff; */
+}
+.seperate-10px {
+  display: flex;
+  gap: 20px;
+  /* justify-content: space-between; */
 }

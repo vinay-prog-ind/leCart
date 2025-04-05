@@ -57,7 +57,6 @@ export const fetchAllPost = async () => {
 export const fetchProducts = async (category) => {
         const category_name = parseInt(category.queryKey[1]);
         const res = await api.get(`/product?category=${category_name}`);
-        console.log(res);
         return res.data.data;
 }
 

@@ -93,6 +93,18 @@ class Product {
         } catch (err) {}
     }
     static async fetchProductDetails() {}
+
+    static async updateStock() {
+        try {
+            
+            // stock = stock - bought
+
+        } catch (error) {
+            
+        }
+    }
+
 }
+
 
 module.exports = Product;

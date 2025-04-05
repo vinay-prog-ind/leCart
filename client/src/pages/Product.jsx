@@ -3,12 +3,18 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { fetchPostDetail } from "../utils/api";
 import LoadingComponent from "../components/ui/LoadingComponent";
+import Button from "../components/ui/Button";
+import { formatDate } from "../utils/formateDate";
 
 export default function Product() {
     const { id } = useParams();
     const [product, setProduct] = useState();
+    const [openForm, setOpenForm] = useState(false);
 
     const [quantity, setQuantity] = useState(1);
+    const [cost, setCost] = useState(0);
+
+    const navigate = useNavigate();
 
     const { isPending, isError, error, data } = useQuery({
         queryKey: ["product", id],
@@ -16,30 +22,32 @@ export default function Product() {
         // queryFn: () => test(id),
     });
 
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "long",
-            day: "numeric",
-        });
+    const handleQuantityChange = (e) => {
+        const value = parseInt(e.target.value);
+        if (value > 0 && value <= product.stock_quantity) {
+            setQuantity(value);
+        }
     };
-    
-  const handleQuantityChange = (e) => {
-    const value = parseInt(e.target.value);
-    if (value > 0 && value <= product.stock_quantity) {
-      setQuantity(value);
-    }
-  };
 
-    const navigate = useNavigate();
     const handleBackNavigate = () => {
         navigate("/");
-    }
+    };
+
+    const handleBuyToggle = (value) => {
+        setOpenForm(value);
+    };
+
+    const handleSubmit = () => {};
+
+    useEffect(() => {
+        setCost(quantity * data?.price);
+    }, [quantity]);
 
     return (
-        <div>
-            <div className="back-btn btn" onClick={handleBackNavigate}>&#10094;{" "}Back</div>
+        <div className="product-page-section">
+            <div className="back-btn btn" onClick={handleBackNavigate}>
+                &#10094; Back
+            </div>
             {isPending ? (
                 <div className="products-containers-loading">
                     <LoadingComponent />
@@ -126,14 +134,146 @@ export default function Product() {
                                     </button>
                                 </div>
 
-                                <button
-                                    className="buy-button"
+                                <Button
+                                    type="buy"
                                     disabled={
                                         !data.isActive ||
                                         data.stock_quantity === 0
-                                    }>
-                                    BUY
-                                </button>
+                                    }
+                                    text={"BUY"}
+                                    onClick={() => handleBuyToggle(true)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+            {openForm && (
+                <div
+                    className={`${
+                        openForm ? "open-form address-form" : "close"
+                    }`}>
+                    <div className="address-form-inner">
+                        <div className="form-container" onClick={handleSubmit}>
+                            <div className="form-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="product_name">
+                                    Product Name
+                                </label>
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    id="product_name"
+                                    name="product_name"
+                                    // value={productData.product_name}
+                                    // onChange={handleOnChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="product_name">
+                                    Address
+                                </label>
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    id="product_name"
+                                    name="product_name"
+                                    // value={productData.product_name}
+                                    // onChange={handleOnChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="product_name">
+                                    Pincode
+                                </label>
+                                <input
+                                    className="form-input"
+                                    type="number"
+                                    id="product_name"
+                                    name="product_name"
+                                    // value={productData.product_name}
+                                    // onChange={handleOnChange}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label
+                                    className="form-label"
+                                    htmlFor="product_name">
+                                    Email address
+                                </label>
+                                <input
+                                    className="form-input"
+                                    type="text"
+                                    id="product_name"
+                                    name="product_name"
+                                    // value={productData.product_name}
+                                    // onChange={handleOnChange}
+                                    required
+                                />
+                            </div>
+
+                            <div className="seperate-10px">
+                                <div className="form-group">
+                                    <label
+                                        className="form-label"
+                                        htmlFor="product_name">
+                                        Quantity
+                                    </label>
+                                    <input
+                                        className="form-input"
+                                        type="number"
+                                        id="product_name"
+                                        name="product_name"
+                                        defaultValue={quantity}
+                                        // value={productData.product_name}
+                                        // onChange={handleOnChange}
+                                        required
+                                        disabled
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label
+                                        className="form-label"
+                                        htmlFor="product_name">
+                                        Total
+                                    </label>
+                                    <input
+                                        className="form-input"
+                                        type="number"
+                                        id="product_name"
+                                        name="product_name"
+                                        defaultValue={cost}
+                                        // value={productData.product_name}
+                                        // onChange={handleOnChange}
+                                        required
+                                        disabled
+                                    />
+                                </div>
+                            </div>
+                            <p style={{ color: "red", marginBottom: "15px" }}>
+                                we only accept Cash on delivery, Online banking
+                                in not yet available*
+                            </p>
+                            <div className="seperate-10px">
+                                <Button
+                                    type="buy"
+                                    text={"CONFIRM ORDER"}
+                                    // onClick={() => handleBuyToggle(true)}
+                                />
+                                <Button
+                                    // type="buy"
+                                    onClick={() => handleBuyToggle(false)}
+                                    text={"CANCEL"}
+                                />
                             </div>
                         </div>
                     </div>

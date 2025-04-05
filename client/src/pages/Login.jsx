@@ -7,6 +7,8 @@ import LoadingComponent from "../components/ui/LoadingComponent";
 import { ToastContainer, toast } from "react-toastify";
 
 export default function Login() {
+    const username = sessionStorage.getItem('username');
+
     const { login, logout, isLoading, setIsLoading } = useUser();
     const [user, setUser] = useState({
         email: "",
@@ -42,55 +44,67 @@ export default function Login() {
         }
     };
     const navigate = useNavigate();
-    const handleNavigate = () => {
-        navigate("/register");
+    const handleNavigate = (to) => {
+        navigate(to);
     };
     return (
         <div className="login-div">
-            <ToastContainer
-            />
-            <div className="login-div-inner">
-                {!isLoading ? (
-                    <>
-                        <h1>Welcome back</h1>
-                        <form className="login-form" onSubmit={handleSubmit}>
-                            <Input
-                                label="Email address"
-                                name="email"
-                                onChange={handleOnChange}
-                                type={"email"}
-                                value={user.email}
-                                ofType={"login"}
-                            />
-                            <Input
-                                label="Password"
-                                name="password"
-                                onChange={handleOnChange}
-                                type={"password"}
-                                value={user.password}
-                                ofType={"login"}
-                            />
+            <ToastContainer />
+            {!username ? (
+                <div className="login-div-inner">
+                    {!isLoading ? (
+                        <>
+                            <h1>Welcome back</h1>
+                            <form
+                                className="login-form"
+                                onSubmit={handleSubmit}>
+                                <Input
+                                    label="Email address"
+                                    name="email"
+                                    onChange={handleOnChange}
+                                    type={"email"}
+                                    value={user.email}
+                                    ofType={"login"}
+                                />
+                                <Input
+                                    label="Password"
+                                    name="password"
+                                    onChange={handleOnChange}
+                                    type={"password"}
+                                    value={user.password}
+                                    ofType={"login"}
+                                />
 
-                            <Button
-                                text={"Login"}
-                                onClick={handleSubmit}
-                                type={"login"}
-                            />
-                        </form>
-                        <div className="form-dotted-div">
-                            <p> OR </p>
-                        </div>
-                        <p>
-                            <span id="text-dim">Don't have an account?</span>{" "}
-                            <span onClick={handleNavigate} id="text-highlight">
-                                Register.
-                            </span>
-                        </p>
-                    </>
-                ) : (
-                    <LoadingComponent />
-                )}
-            </div>
+                                <Button
+                                    text={"Login"}
+                                    onClick={handleSubmit}
+                                    type={"login"}
+                                />
+                            </form>
+                            <div className="form-dotted-div">
+                                <p> OR </p>
+                            </div>
+                            <p>
+                                <span id="text-dim">
+                                    Don't have an account?
+                                </span>
+                                <span
+                                    onClick={() => handleNavigate("/register")}
+                                    id="text-highlight">
+                                    Register.
+                                </span>
+                            </p>
+                        </>
+                    ) : (
+                        <LoadingComponent />
+                    )}
+                </div>
+            ) : (
+                <div>
+                    <h1>Already logged in</h1>
+                    <h2 style={{cursor: "pointer"}} onClick={() => handleNavigate("/")}>Return to Home page</h2>
+                </div>
+            )}
         </div>
     );
 }

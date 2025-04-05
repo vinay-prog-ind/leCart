@@ -16,7 +16,7 @@ export default function Error() {
             <ToastContainer />
             <h1>Something went wrong.</h1>
             <h2>Try again sometimes later</h2>
-            <h2 onClick={() => navigate("/login")} id="error-page-return">Return to login page?</h2>
+            {/* <h2 onClick={() => navigate("/login")} id="error-page-return">Return to login page?</h2> */}
         </div>
     );
 }

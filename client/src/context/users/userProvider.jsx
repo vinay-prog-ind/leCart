@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { UserContext } from "./userContext";
-import { AdminLogin, api} from "../../utils/api";
+import { AdminLogin, api } from "../../utils/api";
 
 export default function UserProvider({ children }) {
     const [user_id, setUser_id] = useState(
@@ -15,25 +15,22 @@ export default function UserProvider({ children }) {
     const [isLoading, setIsLoading] = useState(false);
 
     const login = async (userData) => {
-        
         try {
-            
-            const res = await api.post('/user/login', userData);
+            const res = await api.post("/user/login", userData);
 
             sessionStorage.setItem("user_id", res.data.user.user_id);
             sessionStorage.setItem("username", res.data.user.username);
             sessionStorage.setItem("email", res.data.user.email);
             sessionStorage.setItem("token", res.data.token);
             sessionStorage.setItem("role", "user");
-            
+
             setUser_id(res.data.user.user_id);
             setUsername(res.data.user.username);
             setEmail(res.data.user.email);
             setToken(res.data.token);
             setRole("user");
-            
         } catch (error) {
-            throw new error;
+            throw new error();
         }
     };
     const Adminlogin = async (userData) => {
@@ -46,7 +43,7 @@ export default function UserProvider({ children }) {
             sessionStorage.setItem("email", data.user.email);
             sessionStorage.setItem("token", data.token);
             sessionStorage.setItem("role", data.user.role);
-            
+
             setUser_id(data.user.user_id);
             setUsername(data.user.username);
             setEmail(data.user.email);
@@ -57,9 +54,7 @@ export default function UserProvider({ children }) {
             console.log(error);
         }
     };
-    const register = async () => {
-        
-    }
+    const register = async () => {};
     const logout = () => {
         sessionStorage.clear();
     };
