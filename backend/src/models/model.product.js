@@ -106,16 +106,16 @@ class Product {
     static async insertOrder(user_id, product_id, quantity, total_cost) {
 
         try {
-            console.log('data comming');
+
             const data = await pool.connect().then((client) => {
                 return client
                     .query(
-                        'INSERT INTO orders(user_id, total_amount, quantity, product_id) VALUES($1, $2, $3, $4) RETURNING * ',
+                        'INSERT INTO orders(user_id, total_amount, quantity, product_id) VALUES($1, $2, $3, $4) RETURNING *',
                         [
-                        user_id,
-                        total_cost,
-                        quantity,
-                        product_id
+                            user_id,
+                            total_cost,
+                            quantity,
+                            product_id
                         ]
                     )
                     .then((data) => {
@@ -127,6 +127,7 @@ class Product {
                         throw err;
                     });
             });
+            console.log(data);
             return data;
         } catch (err) {
             console.log(err);
@@ -134,6 +135,39 @@ class Product {
 
     }
 
+    static async insertAddress(order_id,email,mobile_no,address,pincode,user_id) {
+
+        try {
+
+            const data = await pool.connect().then((client) => {
+                return client
+                    .query(
+                        'INSERT INTO address(email,mobile_no,address,pincode, user_id,order_id) VALUES($1, $2, $3, $4,$5,$6) RETURNING *',
+                        [
+                            email,
+                            mobile_no,
+                            address,
+                            pincode,
+                            user_id,
+                            order_id
+                        ]
+                    )
+                    .then((data) => {
+                        client.release();
+                        return data.rows[0];
+                    })
+                    .catch((err) => {
+                        client.release();
+                        throw err;
+                    });
+            });
+            console.log(data);
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+
+    }
 }
 
 
