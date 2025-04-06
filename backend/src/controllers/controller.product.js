@@ -68,8 +68,16 @@ exports.createProduct = async (req, res, next) => {
 
 exports.buyProduct = async (req, res, next) => {
     try {
-        const data = req.body;
-        console.log(data);
+        
+        const {product_id,address,pincode,email,quantity,total_cost,user_id} = req.body;
+
+        const data = await Product.insertOrder(user_id,product_id,quantity,total_cost);
+        if(data)
+        {
+           
+            
+        }
+        
         res.status(200).json(data);
     } catch (err) {
         console.log(err);

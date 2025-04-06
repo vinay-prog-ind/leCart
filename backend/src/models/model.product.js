@@ -42,7 +42,7 @@ class Product {
     }
     static async editProduct() {
         try {
-        } catch (err) {}
+        } catch (err) { }
     }
     static async findProduct(id) {
         try {
@@ -74,7 +74,7 @@ class Product {
                     .finally(client.release());
             });
             return data;
-        } catch (err) {}
+        } catch (err) { }
     }
     static async findAllProduct() {
         try {
@@ -90,18 +90,48 @@ class Product {
                     .finally(client.release());
             });
             return data;
-        } catch (err) {}
+        } catch (err) { }
     }
-    static async fetchProductDetails() {}
+    static async fetchProductDetails() { }
 
     static async updateStock() {
         try {
-            
+
             // stock = stock - bought
 
         } catch (error) {
-            
+
         }
+    }
+    static async insertOrder(user_id, product_id, quantity, total_cost) {
+
+        try {
+            console.log('data comming');
+            const data = await pool.connect().then((client) => {
+                return client
+                    .query(
+                        'INSERT INTO orders(user_id, total_amount, quantity, product_id) VALUES($1, $2, $3, $4) RETURNING * ',
+                        [
+                        user_id,
+                        total_cost,
+                        quantity,
+                        product_id
+                        ]
+                    )
+                    .then((data) => {
+                        client.release();
+                        return data.rows[0];
+                    })
+                    .catch((err) => {
+                        client.release();
+                        throw err;
+                    });
+            });
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+
     }
 
 }
