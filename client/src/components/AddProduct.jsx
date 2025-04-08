@@ -14,8 +14,9 @@ export default function AddProduct() {
         stock_quantity: "",
         category_id: "",
         isActive: "",
-        image_uri: "",
     });
+
+    const [image, setImage] = useState(null);
 
     const sanitizeInput = (value) => {
         return value
@@ -42,10 +43,28 @@ export default function AddProduct() {
         });
     };
 
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
+    }
+
     const handleSubmit = async () => {
         try {
-            const data = await addPost(productData);
-            console.log(data);
+            const formData = new FormData();
+            Object.entries(productData).forEach(([key, val]) => {
+                formData.append(key, val);
+            });
+            formData.append('image', image);
+
+            console.log(image);
+            for(let pair of formData.entries()) {
+                console.log(pair[0] +": "+pair[1]);
+            }
+            
+            const data = await addPost(formData);
+            // console.log(data);
+        
         } catch (err) {
             console.log(err);
         }
@@ -90,7 +109,7 @@ export default function AddProduct() {
                             name="description"
                             value={productData.description}
                             onChange={handleOnChange}
-                            rows="4"
+                            rows="2"
                         />
                     </div>
 
@@ -187,7 +206,7 @@ export default function AddProduct() {
                             id="image_uri"
                             name="image_uri"
                             accept="image/*"
-                            onChange={handleOnChange}
+                            onChange={handleFileChange}
                         />
                         {imagePreview && (
                             <div className="image-preview-container">

@@ -7,5 +7,4 @@ router.route('/register/admin').post(registerAdmin);
 router.route('/login').post(login);
 router.route('/login/admin').post(adminLogin);
 
-
 module.exports = router;

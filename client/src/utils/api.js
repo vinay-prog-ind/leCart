@@ -16,12 +16,12 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-// export const userLogin = async (userData) => {
+export const userLogin = async (userData) => {
 
-//     const user = await api.post('/user/login', userData);
-//     console.log(user);
-//     return user;
-// }
+    const user = await api.post('/user/login', userData);
+    console.log(user);
+    return user;
+}
 export const AdminLogin = async (userData) => {
 
     const user = await api.post('/user/login/admin', userData);
@@ -39,8 +39,13 @@ export const testCookie = async () => {
 }
 
 export const addPost = async (product) => {
-    const data = await api.post('/product/new', product);
-    return data;
+
+    const data = await api.post('/product/new', product, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        }
+    });
+    return data;   
 }
 
 export const fetchCategories = async () => {
