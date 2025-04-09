@@ -5,9 +5,12 @@ import { buyProduct, fetchPostDetail } from "../utils/api";
 import LoadingComponent from "../components/ui/LoadingComponent";
 import Button from "../components/ui/Button";
 import { formatDate } from "../utils/formateDate";
+import { useUser } from "../context/users/useUser";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Product() {
     const { id } = useParams();
+    const { email } = useUser();
     const [product, setProduct] = useState();
     const [openForm, setOpenForm] = useState(false);
 
@@ -15,6 +18,8 @@ export default function Product() {
     const [cost, setCost] = useState(0);
 
     const navigate = useNavigate();
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const { isPending, isError, error, data } = useQuery({
         queryKey: ["product", id],
@@ -52,6 +57,7 @@ export default function Product() {
     };
 
     const handleSubmit = async () => {
+        setIsLoading(true);
         const totalCost = quantity * data.price;
 
         setDetails((prevDetails) => ({
@@ -66,12 +72,17 @@ export default function Product() {
             total_cost: totalCost,
         };
         await buyProduct(payload);
+        setIsLoading(false);
+        setOpenForm(false);
+        toast("Order Placed Successfully!! 🥳🥳", {
+            position: "top-center"
+
+        });
     };
-
-
 
     return (
         <div className="product-page-section">
+            <ToastContainer />
             <div className="back-btn btn" onClick={handleBackNavigate}>
                 &#10094; Back
             </div>
@@ -178,6 +189,10 @@ export default function Product() {
                             className={`${
                                 openForm ? "open-form address-form" : "close"
                             }`}>
+                            {isLoading && <div className="loading-center">
+                                <LoadingComponent type="large"/>
+                            </div>}
+
                             <div className="address-form-inner">
                                 <div
                                     className="form-container"
@@ -243,28 +258,29 @@ export default function Product() {
                                             // id="product_name"
                                             name="email"
                                             // value={productData.product_name}
+                                            defaultValue={email}
                                             onChange={handleOnChange}
                                             required
                                         />
                                     </div>
 
                                     <div className="form-group">
-                                            <label
-                                                className="form-label"
-                                                htmlFor="product_name">
-                                                Mobile number
-                                            </label>
-                                            <input
-                                                className="form-input"
-                                                type="number"
-                                                // id="product_name"
-                                                name="mobile_no"
-                                                // defaultValue={quantity}
-                                                // value={productData.product_name}
-                                                onChange={handleOnChange}
-                                                required
-                                            />
-                                        </div>
+                                        <label
+                                            className="form-label"
+                                            htmlFor="product_name">
+                                            Mobile number
+                                        </label>
+                                        <input
+                                            className="form-input"
+                                            type="number"
+                                            // id="product_name"
+                                            name="mobile_no"
+                                            // defaultValue={quantity}
+                                            // value={productData.product_name}
+                                            onChange={handleOnChange}
+                                            required
+                                        />
+                                    </div>
 
                                     <div className="seperate-10px">
                                         <div className="form-group">

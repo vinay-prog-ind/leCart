@@ -8,7 +8,8 @@ exports.register = async (req, res, next) => {
     try {
         const JWT_SECRET = process.env.JWT_SECRET;
         const { username, email, password } = req.body;
-        const hashedPass = await bcrypt.hash(password, 10);
+        const salt = await bcrypt.genSalt(10);
+        const hashedPass = await bcrypt.hash(password, salt);
         const data = await User.insertUser(username, email, hashedPass);
         let token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
             expiresIn: "1h",
@@ -34,7 +35,7 @@ exports.registerAdmin = async (req, res, next) => {
     try {
         const JWT_SECRET = process.env.JWT_SECRET;
         const { username, email, password, role} = req.body;
-        
+        const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(password, 10);
         const data = await User.insertAdmin(username, email, hashedPass, role);
         let token = await jwt.sign({ id: data.user_id }, JWT_SECRET, {
