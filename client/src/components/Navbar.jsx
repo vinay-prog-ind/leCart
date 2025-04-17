@@ -18,9 +18,13 @@ export default function Navbar() {
         }
     }
 
+    const handleNavigate = () => {
+        navigate("/");
+    }
+
     return (
         <nav className="main-nav">
-            <h2>leCart</h2>
+            <h2 onClick={handleNavigate} style={{cursor: "pointer"}}>leCart</h2>
             <input className="navbar-searchbar" type="text" placeholder="search item" />
             <div>
                 <p className="avatar">{username.slice(0, 1).toUpperCase()}</p>

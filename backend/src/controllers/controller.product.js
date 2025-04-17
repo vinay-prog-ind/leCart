@@ -1,6 +1,7 @@
-const { cloudinary} = require("../config/config.cloudinary");
+// const { cloudinary} = require("../config/config.cloudinary");
 const Category = require("../models/model.category");
 const Product = require("../models/model.product");
+const uploadOnCloudinary = require("../utils/config.cloudinary");
 
 exports.getAllProducts = async (req, res, next) => {
     try {
@@ -50,10 +51,7 @@ exports.createProduct = async (req, res, next) => {
             stock_quantity,
             category_id,
             isActive,
-            image_uri,
         } = req.body;
-
-        console.log(req.file);
 
         const product_name_c = product_name
             .trim()
@@ -63,36 +61,26 @@ exports.createProduct = async (req, res, next) => {
             .replace(/<[^>]*>?/gm, "")
             .replace(/[^\w\s.,-]/gi, "");
 
-        // const streamUpload = await new Promise((resolve, reject) => {
-        //     const stream = cloudinary.uploader.upload_stream(
-        //         { folder: "uploads" },
-        //         (error, result) => {
-        //             if (result) resolve(result);
-        //             else reject(error);
-        //         }
-        //     );
-        //     stream.end(req.file.buffer);
-        // });
-
-        // const result = await streamUpload();
-        // res.status(200).json({ url: result.secure_url });
-        // console.log(result.secure_url);
-
-        // const data = await Product.insertProduct(
-        //     product_name_c,
-        //     description_c,
-        //     price,
-        //     stock_quantity,
-        //     category_id,
-        //     isActive,
-        //     image_uri
-        // );
+        const productImageLocalPath = req.file?.path;
+        const {url} = await uploadOnCloudinary(
+            productImageLocalPath
+        );
+        let data;
+        if (url) {
+            data = await Product.insertProduct(
+                product_name_c,
+                description_c,
+                price,
+                stock_quantity,
+                category_id,
+                isActive,
+                url
+            );
+        }
+        console.log(data);
         // await Category.assignCategory(data.product_id, data.category_id);
 
-        const body = req.body;
-
-        res.status(200).json(body);
-        // console.log(req.body);
+        res.status(200).json(data);
     } catch (err) {
         console.log(err);
     }

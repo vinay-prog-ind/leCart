@@ -32,7 +32,7 @@ class Product {
                     })
                     .catch((err) => {
                         client.release();
-                        throw err;
+                        throw err
                     });
             });
             return data;
