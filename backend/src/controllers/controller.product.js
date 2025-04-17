@@ -2,6 +2,8 @@
 const Category = require("../models/model.category");
 const Product = require("../models/model.product");
 const uploadOnCloudinary = require("../utils/config.cloudinary");
+const fs = require("fs");
+const path = require("path");
 
 exports.getAllProducts = async (req, res, next) => {
     try {
@@ -62,9 +64,7 @@ exports.createProduct = async (req, res, next) => {
             .replace(/[^\w\s.,-]/gi, "");
 
         const productImageLocalPath = req.file?.path;
-        const {url} = await uploadOnCloudinary(
-            productImageLocalPath
-        );
+        const { url } = await uploadOnCloudinary(productImageLocalPath);
         let data;
         if (url) {
             data = await Product.insertProduct(
@@ -75,6 +75,18 @@ exports.createProduct = async (req, res, next) => {
                 category_id,
                 isActive,
                 url
+            );
+        }
+        console.log(req.file.path);
+        if (data) {
+            fs.unlink(productImageLocalPath,
+                (err) => {
+                    if (err) {
+                        console.error("Error deleting local file:", err);
+                    } else {
+                        console.log("Local file deleted successfully");
+                    }
+                }
             );
         }
         console.log(data);
