@@ -3,9 +3,12 @@ import Input from "./ui/Input";
 import Button from "./ui/Button";
 import { addPost, fetchCategories } from "../utils/api";
 import Textbox from "./ui/Textbox";
+import LoadingComponent from "./ui/LoadingComponent";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function AddProduct() {
     const [categories, setCategories] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState(null);
     const [productData, setProductData] = useState({
         product_name: "",
@@ -47,24 +50,38 @@ export default function AddProduct() {
         const file = e.target.files[0];
         setImage(file);
         setImagePreview(URL.createObjectURL(file));
-    }
+    };
 
     const handleSubmit = async () => {
         try {
+            setIsLoading(true);
             const formData = new FormData();
             Object.entries(productData).forEach(([key, val]) => {
                 formData.append(key, val);
             });
-            formData.append('image', image);
+            formData.append("image", image);
 
             console.log(image);
-            for(let pair of formData.entries()) {
-                console.log(pair[0] +": "+pair[1]);
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ": " + pair[1]);
             }
-            
+
             const data = await addPost(formData);
-            // console.log(data);
-        
+            setProductData({
+                product_name: "",
+                description: "",
+                price: "",
+                stock_quantity: "",
+                category_id: "",
+                isActive: "",
+            });
+            toast("product successfully posted", {
+                theme:"dark",
+                position: 'top-center'
+            });
+            setIsLoading(false);
+            setImage(null);
+            setImagePreview(null);
         } catch (err) {
             console.log(err);
         }
@@ -81,6 +98,12 @@ export default function AddProduct() {
     return (
         <>
             <div className="form-container">
+                <ToastContainer />
+                {isLoading && (
+                    <div className="loading-center">
+                        <LoadingComponent type="large"/>
+                    </div>
+                )}
                 <div onSubmit={handleSubmit}>
                     <h2 className="form-title">Add New Product</h2>
 
